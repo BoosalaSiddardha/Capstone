@@ -4,6 +4,7 @@ import os
 
 app = Flask(__name__)
 
+# Path to database (works locally and on Render)
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DB_PATH = os.path.join(BASE_DIR, "pesticide.db")
 
@@ -26,40 +27,55 @@ def health_check():
 
 @app.route("/search", methods=["GET"])
 def search():
-    crop = request.args.get("crop", "").strip().lower()
+    search_type = request.args.get("type", "").strip().lower()
+    value = request.args.get("value", "").strip().lower()
 
-    if not crop:
+    if not value:
         return jsonify([])
 
     conn = get_db_connection()
     cursor = conn.cursor()
 
-    cursor.execute("""
-        SELECT 
-            Crops_Used_On,
-            Pesticide,
-            Human_Health_Effects,
-            Reason_for_Health_Impact
-        FROM pesticide_data
-        WHERE LOWER(crop_name) LIKE ?
-    """, (f"%{crop}%",))
-
-    rows = cursor.fetchall()
-    conn.close()
-
     results = []
-    for row in rows:
-        results.append({
-            "crop": row["crop_name"],
-            "pesticide": row["pesticide_name"],
-            "quantity": row["quantity_used"],
-            "health_effects": row["health_effects"]
-        })
 
+    # Search by crop
+    if search_type == "crop":
+        cursor.execute("""
+            SELECT pesticide, crop, health_effect, reason
+            FROM pesticide_data
+            WHERE LOWER(crop) LIKE ?
+        """, (f"%{value}%",))
+        rows = cursor.fetchall()
+        for row in rows:
+            results.append({
+                "crop": row["crop"],
+                "pesticide": row["pesticide"],
+                "health_effect": row["health_effect"],
+                "reason": row["reason"]
+            })
+
+    # Search by pesticide
+    elif search_type == "pesticide":
+        cursor.execute("""
+            SELECT pesticide, crop, health_effect, reason
+            FROM pesticide_data
+            WHERE LOWER(pesticide) LIKE ?
+        """, (f"%{value}%",))
+        rows = cursor.fetchall()
+        for row in rows:
+            results.append({
+                "crop": row["crop"],
+                "pesticide": row["pesticide"],
+                "health_effect": row["health_effect"],
+                "reason": row["reason"]
+            })
+
+    conn.close()
     return jsonify(results)
 
 
+
 if __name__ == "__main__":
-    # For deployment platforms (Render, Railway, etc.)
+    # Detect port for Render, fallback to local 5000
     port = int(os.environ.get("PORT", 5000))
-    app.run(host="0.0.0.0", port=port, debug=True)
+    app.run(host="0.0.0.0", port=port)
