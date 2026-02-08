@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Pesticide Impact on Human Health</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+    <h1>Pesticide Impact on Human Health</h1>
+
+    <div class="search-box">
+        <select id="searchType">
+            <option value="crop">Search by Crop</option>
+            <option value="pesticide">Search by Pesticide</option>
+        </select>
+
+        <input type="text" id="searchInput" placeholder="Enter crop or pesticide name">
+
+        <button id="searchBtn">Search</button>
+    </div>
+
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Crop</th>
+                <th>Pesticide</th>
+                <th>Health Effect</th>
+                <th>Reason</th>
+            </tr>
+        </thead>
+        <tbody id="resultsBody">
+            <tr>
+                <td colspan="4">Search to see results</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- IMPORTANT: Flask static loading -->
+    <script src="{{ url_for('static', filename='script.js') }}?v=1"></script>
+</body>
+</html>
