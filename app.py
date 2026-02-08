@@ -36,10 +36,10 @@ def search():
 
     cursor.execute("""
         SELECT 
-            crop_name,
-            pesticide_name,
-            quantity_used,
-            health_effects
+            Crops_Used_On,
+            Pesticide,
+            Human_Health_Effects,
+            Reason_for_Health_Impact
         FROM pesticide_data
         WHERE LOWER(crop_name) LIKE ?
     """, (f"%{crop}%",))
