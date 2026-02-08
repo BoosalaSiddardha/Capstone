@@ -40,7 +40,7 @@ def search():
             pesticide_name,
             quantity_used,
             health_effects
-        FROM pesticides
+        FROM pesticide_data
         WHERE LOWER(crop_name) LIKE ?
     """, (f"%{crop}%",))
 
