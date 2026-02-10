@@ -73,7 +73,36 @@ def search():
     conn.close()
     return jsonify(results)
 
+    
+@app.route("/crop_health_stats")
+def crop_health_stats():
+    crop = request.args.get("crop", "").strip().lower()
+    if not crop:
+        return jsonify({})
 
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        SELECT health_effect
+        FROM pesticide_data
+        WHERE LOWER(crop) = ?
+    """, (crop,))
+
+    rows = cursor.fetchall()
+    conn.close()
+
+    effect_counts = {}
+
+    for row in rows:
+        effects = row["health_effect"].split(",")
+        for effect in effects:
+            effect = effect.strip().lower()
+            if effect:
+                effect_counts[effect] = effect_counts.get(effect, 0) + 1
+
+    return jsonify(effect_counts)
+ 
 
 if __name__ == "__main__":
     # Detect port for Render, fallback to local 5000

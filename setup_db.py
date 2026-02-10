@@ -37,7 +37,7 @@ with open(os.path.join(BASE_DIR, "datasets", "pesticide_health.csv"),
             """, (
                 pesticide,
                 crop.strip().lower(),
-                row["Human_Health_Effects"],
+                row["Human_Health_Effects"].strip().lower(),
                 row["Reason_for_Health_Impact"]
             ))
 
