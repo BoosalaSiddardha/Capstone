@@ -2,51 +2,76 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pesticide Impact on Human Health</title>
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
+
 <body>
 
-<h1>Pesticide Impact on Human Health</h1>
+    <!-- Background Blobs -->
+    <div class="blob blob1"></div>
+    <div class="blob blob2"></div>
 
-<div class="search-box">
-    <select id="searchType">
-        <option value="crop">Search by Crop</option>
-        <option value="pesticide">Search by Pesticide</option>
-    </select>
 
-    <input type="text" id="searchInput" placeholder="Enter crop or pesticide name">
-    <button id="searchBtn">Search</button>
-</div>
+    <main class="container">
 
-<table border="1">
-    <thead>
-        <tr>
-            <!-- <th>Crop</th> -->
-            <th>Pesticide</th>
-            <th>Health Effect</th>
-            <th>Reason</th>
-        </tr>
-    </thead>
-    <tbody id="resultsBody">
-        <tr>
-            <td colspan="3">Search to see results</td>
-        </tr>
-    </tbody>
-</table>
+        <h1>Pesticide Impact on Human Health</h1>
 
-<!-- NEW GRAPH -->
-<h3>Health Impact Analysis</h3>
-<canvas id="healthChart"></canvas>
-<p id="noDataMsg" style="display:none;">
-    No health effect data available for this crop.
-</p>
+        <!-- Search Section -->
+        <section class="glass-card search-box">
+            <select id="searchType">
+                <option value="crop">Search by Crop</option>
+                <option value="pesticide">Search by Pesticide</option>
+            </select>
 
-<!-- Chart.js -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+            <input type="text" id="searchInput" placeholder="Enter crop name">
+            <button id="searchBtn">Search</button>
+        </section>
 
-<!-- Your JS -->
-<script src="{{ url_for('static', filename='script.js') }}?v=2"></script>
+        <!-- Progress Bar -->
+        <div class="progress-container">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
+
+        <!-- Results Table -->
+        <section class="glass-card table-card">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Pesticide</th>
+                        <th>Health Effect</th>
+                        <th>Reason</th>
+                    </tr>
+                </thead>
+                <tbody id="resultsBody">
+                    <tr>
+                        <td colspan="3">Search to see results</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Chart Section -->
+        <h3>Health Impact Analysis</h3>
+
+        <section class="glass-card chart-card">
+            <canvas id="healthChart"></canvas>
+        </section>
+
+        <p id="noDataMsg" class="no-data">
+            No health effect data available for this crop.
+        </p>
+
+    </main>
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="{{ url_for('static', filename='script.js') }}?v=2"></script>
 
 </body>
 </html>
